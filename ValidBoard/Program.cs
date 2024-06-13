@@ -58,21 +58,4 @@
         }
         return (isValid1 && isValid2 && isValid3);
     }
-
-    /*public static void ListeIndex()
-    {
-        // Liste des index pour les case 3x3
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                Console.Write("i : " + ((3 * (i / 3)) + (j / 3)) + " j : " + ((3 * (i % 3)) + (j % 3)) + " | ");
-                if (j % 3 == 2)
-                {
-                    Console.WriteLine("");
-                }
-            }
-            Console.WriteLine();
-        }
-    }*/
 }
