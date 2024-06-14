@@ -24,8 +24,10 @@
             isValid = ValidateHorizontal(board, i);
             // Ici on fournit le numéro de la colonne à valider
             isValid = ValidateVertical(board, i);
-            // Ici on fournit le numéro de la ligne et de la colone à valider
-            isValid = Validate3x3Grid(board, 3 * (i / 3), 3 * (i % 3));
+            // Ici on fournit le numéro de la grille
+            // Utiliser la méthode GetGridNumber pour l'obtenir
+            // à l'aide des numéros de ligne et colonne
+            isValid = Validate3x3Grid(board, i);
         }
 
         if(isValid)
@@ -51,7 +53,7 @@
         return true;
     }
 
-    public static bool ValidateHorizontal(string[][] board, int i)
+    public static bool ValidateHorizontal(string[][] board, int rowNumber)
     {
         bool isValid = true;
         // Variables pour accumuler les valeurs déjà présentes
@@ -61,12 +63,12 @@
 
         for (int index = 0; index < board[0].Length && isValid; index++)
         {
-            isValid = Validate(board[i][index], ref alreadyInHorizontal);
+            isValid = Validate(board[rowNumber][index], ref alreadyInHorizontal);
         }
         return isValid;
     }
 
-    public static bool ValidateVertical(string[][] board, int j)
+    public static bool ValidateVertical(string[][] board, int colunmNumber)
     {
         bool isValid = true;
         // Variables pour accumuler les valeurs déjà présentes
@@ -76,7 +78,7 @@
 
         for (int index = 0; index < board[0].Length && isValid; index++)
         {
-            isValid = Validate(board[index][j], ref alreadyInVertical);
+            isValid = Validate(board[index][colunmNumber], ref alreadyInVertical);
         }
         return (isValid);
     }
@@ -90,11 +92,9 @@
 
         return (3 * (i / 3)) + (j / 3);
     }
-    public static bool Validate3x3Grid(string[][] board, int i, int j)
+    public static bool Validate3x3Grid(string[][] board, int gridNumber)
     {
         bool isValid = true;
-
-        int gridNumber = GetGridNuber(i, j);
 
         // Variables pour accumuler les valeurs déjà présentes
         string alreadyIn3x3Grid;
