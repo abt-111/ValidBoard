@@ -2,6 +2,7 @@
 {
     private static void Main(string[] args)
     {
+        bool isValid = true;
         string[][] board = 
         [
                 ["8","3",".",   ".","7",".",    ".",".","."],
@@ -17,7 +18,17 @@
                 [".",".",".",   ".","8",".",    ".","7","9"]
         ];
 
-        if (ParcoursEtValidation(board))
+        for(int i = 0; i < board.Length && isValid; i++)
+        {
+            // Ici on fournit le numéro de la ligne à valider
+            isValid = ValidateHorizontal(board, i);
+            // Ici on fournit le numéro de la colonne à valider
+            isValid = ValidateVertical(board, i);
+            // Ici on fournit le numéro de la ligne et de la colone à valider
+            isValid = Validate3x3Grid(board, 3 * (i / 3), 3 * (i % 3));
+        }
+
+        if(isValid)
         {
             Console.WriteLine("Valide");
         }
@@ -26,36 +37,74 @@
             Console.WriteLine("Invalide");
         }
     }
-    public static bool Verification(string valeurCourante, ref string cumuleur)
+
+    public static bool Validate(string valeurCourante, ref string alreadyIn)
     {
-        if (cumuleur.Contains(valeurCourante) && valeurCourante != ".")
+        if (alreadyIn.Contains(valeurCourante) && valeurCourante != ".")
         {
             return false;
         }
         else
         {
-            cumuleur += valeurCourante;
+            alreadyIn += valeurCourante;
         }
         return true;
     }
 
-    public static bool ParcoursEtValidation(string[][] board)
+    public static bool ValidateHorizontal(string[][] board, int i)
     {
-        bool isValid1 = true, isValid2 = true, isValid3 = true;
-        string cumuleur1, cumuleur2, cumuleur3;
+        bool isValid = true;
+        // Variables pour accumuler les valeurs déjà présentes
+        string alreadyInHorizontal;
 
-        for (int i = 0; i < board.Length && isValid1 && isValid2 && isValid3; i++)
+        alreadyInHorizontal = "";
+
+        for (int index = 0; index < board[0].Length && isValid; index++)
         {
-            cumuleur1 = "";
-            cumuleur2 = "";
-            cumuleur3 = "";
-            for (int j = 0; j < board[0].Length && isValid1 && isValid2 && isValid3; j++)
-            {
-                isValid1 = Verification(board[i][j], ref cumuleur1);
-                isValid2 = Verification(board[j][i], ref cumuleur2);
-                isValid3 = Verification(board[(3 * (i / 3)) + (j / 3)][(3 * (i % 3)) + (j % 3)], ref cumuleur3);
-            }
+            isValid = Validate(board[i][index], ref alreadyInHorizontal);
         }
-        return (isValid1 && isValid2 && isValid3);
+        return isValid;
+    }
+
+    public static bool ValidateVertical(string[][] board, int j)
+    {
+        bool isValid = true;
+        // Variables pour accumuler les valeurs déjà présentes
+        string alreadyInVertical;
+
+        alreadyInVertical = "";
+
+        for (int index = 0; index < board[0].Length && isValid; index++)
+        {
+            isValid = Validate(board[index][j], ref alreadyInVertical);
+        }
+        return (isValid);
+    }
+
+    public static int GetGridNuber(int i, int j)
+    {
+        // Numééro de grille
+        //  0   1   2
+        //  3   4   5
+        //  6   7   8
+
+        return (3 * (i / 3)) + (j / 3);
+    }
+    public static bool Validate3x3Grid(string[][] board, int i, int j)
+    {
+        bool isValid = true;
+
+        int gridNumber = GetGridNuber(i, j);
+
+        // Variables pour accumuler les valeurs déjà présentes
+        string alreadyIn3x3Grid;
+
+        alreadyIn3x3Grid = "";
+
+        for (int index = 0; index < board[0].Length && isValid; index++)
+        {
+            isValid = Validate(board[(3 * (gridNumber / 3)) + (index / 3)][(3 * (gridNumber % 3)) + (index % 3)], ref alreadyIn3x3Grid);
+        }
+        return isValid;
     }
 }
