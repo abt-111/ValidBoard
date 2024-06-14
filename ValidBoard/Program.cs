@@ -2,7 +2,6 @@
 {
     private static void Main(string[] args)
     {
-        bool isValid = true;
         string[][] board = 
         [
                 ["8","3",".",   ".","7",".",    ".",".","."],
@@ -13,24 +12,12 @@
                 ["4",".",".",   "8",".","3",    ".",".","1"],
                 ["7",".",".",   ".","2",".",    ".",".","6"],
 
-                [".","6",".",   ".",".",".",    "2","8","."],
+                [".","6","2",   ".",".",".",    "2","8","."],
                 [".",".",".",   "4","1","9",    ".",".","5"],
                 [".",".",".",   ".","8",".",    ".","7","9"]
         ];
 
-        for(int i = 0; i < board.Length && isValid; i++)
-        {
-            // Ici on fournit le numéro de la ligne à valider
-            isValid = ValidateHorizontal(board, i);
-            // Ici on fournit le numéro de la colonne à valider
-            isValid = ValidateVertical(board, i);
-            // Ici on fournit le numéro de la grille
-            // Utiliser la méthode GetGridNumber pour l'obtenir
-            // à l'aide des numéros de ligne et colonne
-            isValid = Validate3x3Grid(board, i);
-        }
-
-        if(isValid)
+        if (ValidateAll(board))
         {
             Console.WriteLine("Valide");
         }
@@ -38,6 +25,24 @@
         {
             Console.WriteLine("Invalide");
         }
+    }
+    public static bool ValidateAll(string[][] board)
+    {
+        bool isValid = true;
+
+        for (int i = 0; i < board.Length && isValid; i++)
+        {
+            // Ici on fournit le numéro de la ligne à valider
+            isValid = ValidateHorizontal(board, i);
+            // Ici on fournit le numéro de la colonne à valider
+            isValid &= ValidateVertical(board, i);
+            // Ici on fournit le numéro de la grille
+            // Utiliser la méthode GetGridNumber pour l'obtenir
+            // à l'aide des numéros de ligne et colonne
+            isValid &= Validate3x3Grid(board, i);
+        }
+
+        return isValid;
     }
 
     public static bool Validate(string valeurCourante, ref string alreadyIn)
